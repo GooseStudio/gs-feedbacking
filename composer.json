@@ -1,0 +1,29 @@
+{
+    "name": "goose-studio/gs-feedbacking",
+    "description": "A simple tool to comment pages",
+    "type": "wordpress-plugin",
+    "license": "GPLv3",
+    "authors": [
+        {
+            "name": "Andreas Nurbo",
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "GooseStudio\\Feedbacking\\":"src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+        }
+    },
+    "minimum-stability": "stable",
+    "repositories": [],
+    "require": {
+      "ext-curl": "*",
+        "ext-fileinfo": "*",
+        "ext-json": "*"
+    },
+    "require-dev": {
+    }
+}
