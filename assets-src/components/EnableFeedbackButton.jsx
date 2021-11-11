@@ -3,7 +3,6 @@ class EnableFeedbackButton extends React.Component {
 	constructor(props) {
 		super(props);
 		this.handleClick = this.handleClick.bind(this);
-		this.body = document.getElementsByTagName('body')[0];
 	}
 	render() {
 		return <button className="enable-feedback feedback-button" onClick={this.handleClick}>
@@ -24,7 +23,7 @@ class EnableFeedbackButton extends React.Component {
 	}
 
 	handleClick() {
-		this.body.classList.toggle('feedback');
+        document.body.classList.add('feedback');
         this.props.onEnableClick();
         let anchors = document.getElementsByTagName("a");
         for (let i = 0; i < anchors.length; i++) {

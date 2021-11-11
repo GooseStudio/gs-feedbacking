@@ -3,7 +3,6 @@ class DisableFeedbackButton extends React.Component {
 	constructor(props) {
 		super(props);
 		this.handleClick = this.handleClick.bind(this);
-		this.body = document.getElementsByTagName('body')[0];
 	}
 
 	render() {
@@ -18,7 +17,7 @@ class DisableFeedbackButton extends React.Component {
 		</button>
 	}
 	handleClick() {
-		this.body.classList.toggle('feedback');
+		document.body.classList.remove('feedback');
 	}
 }
 export default DisableFeedbackButton

@@ -18,7 +18,13 @@ class App extends React.Component {
 
     highlightElement (e) {
         this.feedbackForm = this.feedbackForm ?? document.getElementsByClassName('gs-feedback-form')[0];
-        if(!document.body.classList.contains('feedback') || e.target.classList.contains('counter') || this.feedbackForm.classList.contains('show-window') || document.body.classList.contains('show-feedback'))
+        if(!document.body.classList.contains('feedback') ||
+            e.target.classList.contains('counter') ||
+            e.target.classList.contains('feedback-button') ||
+            (e.target.parent && e.target.parent.classList.contains('feedback-button')) ||
+            this.feedbackForm.classList.contains('show-window') ||
+            document.body.classList.contains('show-feedback')
+        )
             return;
         e.target.classList.toggle('hover');
     }

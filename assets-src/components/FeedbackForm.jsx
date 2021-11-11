@@ -57,6 +57,7 @@ class FeedbackForm extends React.Component {
     closeWindow() {
         Helper.getPrevious().classList.remove('selected')
         Helper.getPrevious().classList.remove('hover')
+        console.log(Helper.getPrevious())
         this.feedback = this.feedback ?? document.getElementsByClassName('gs-feedback-form')[0];
         this.feedback.classList.remove('show-window');
         document.body.classList.remove('show-feedback');

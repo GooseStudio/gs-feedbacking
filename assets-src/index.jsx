@@ -19,9 +19,13 @@ window.onload = function () {
     }
 }
 
-
 document.addEventListener('click', function (e) {
-    if(!body.classList.contains('feedback') || body.classList.contains('show-feedback'))
+    if(!document.body.classList.contains('feedback') ||
+        document.body.classList.contains('show-feedback') ||
+        e.target.classList.contains('counter') ||
+        e.target.classList.contains('feedback-button') ||
+        (e.target.parent && e.target.parent.classList.contains('feedback-button'))
+    )
         return;
     e = e || window.event;
     e.preventDefault();
