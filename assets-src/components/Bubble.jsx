@@ -15,8 +15,6 @@ class Bubble extends React.Component {
 	}
 	getOffset(el) {
 		const rect = el.getBoundingClientRect();
-		console.log(rect);
-		console.log(window);
 		return {
 			left: rect.left + window.scrollX+35,
 			top: rect.top + window.scrollY+20
@@ -57,12 +55,13 @@ class Bubble extends React.Component {
 	}
 
 	closeWindow() {
-		Helper.getPrevious().classList.remove('selected')
-        document.body.classList.remove('show-feedback')
-        //this.feedback = this.feedback ?? document.getElementsByClassName('gs-feedback-view')[0];
-		//this.feedback.classList.remove('show-window');
-		Helper.setPrevious(null)
-		this.setState({showForm:false, rendered:true});
+        if ( 0 === document.getElementsByClassName('show-window').length ) {
+            document.body.classList.remove('show-feedback');
+            document.body.style.cursor='pointer';
+            Helper.getPrevious().classList.remove('selected')
+            Helper.setPrevious(null)
+            this.setState({showForm:false, rendered:true});
+        }
 	}
 
 	render() {

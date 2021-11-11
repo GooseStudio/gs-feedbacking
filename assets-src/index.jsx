@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from "./components/App";
-import Bubble from "./components/Bubble";
 import Elements from "./Elements";
 import Helper from "./Helper";
 import Screenshots from "./Screenshots";
@@ -19,53 +18,7 @@ window.onload = function () {
         elements[i].style.position = 'absolute';
     }
 }
-const capture = async () => {
-    const canvas = document.createElement("canvas");
-    const context = canvas.getContext("2d");
-    const video = document.createElement("video");
 
-    try {
-        const captureStream = await navigator.mediaDevices.getDisplayMedia();
-        video.srcObject = captureStream;
-        context.drawImage(video, 0, 0, window.width, window.height);
-        const frame = canvas.toDataURL("image/png");
-        captureStream.getTracks().forEach(track => track.stop());
-        window.location.href = frame;
-    } catch (err) {
-        console.error("Error: " + err);
-    }
-};
-
-/* global gs_sf_data */
-fetch(gs_sf_data.endpoint + '/paths',
-    {
-        method: 'GET', // or 'PUT'
-        headers: {
-            'Content-Type': 'application/json',
-            'X-WP-Nonce': gs_sf_data.nonce,
-        }
-    }
-)
-    .then((response) => response.json())
-    .then((feedback) => {
-        for (let i = 0; i < feedback.length; i++) {
-            if (feedback[i].path === '') {
-                continue;
-            }
-            let element = document.evaluate('/' + feedback[i].path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
-            if (element.singleNodeValue === null) {
-                element = document.evaluate('/' + feedback[i].try_path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null)
-            }
-            if (element.singleNodeValue === null) {
-                continue;
-            }
-
-            let elem = document.createElement('div');
-            elem.dataset.html2canvasIgnore = 'true';
-            element.singleNodeValue.prepend(elem);
-            ReactDOM.render(<Bubble feedbackID={feedback[i].ids} element={element.singleNodeValue}/>, elem);
-        }
-    });
 
 document.addEventListener('click', function (e) {
     if(!body.classList.contains('feedback') || body.classList.contains('show-feedback'))
@@ -89,22 +42,7 @@ document.addEventListener('click', function (e) {
     feedbackForm.classList.add('show-window');
     feedbackForm.style.left = e.pageX + 'px';
     feedbackForm.style.top = e.pageY + 'px';
-    //Screenshots.canvas(document.body);
-//    var headings = document.evaluate(path, document, null, XPathResult.ANY_TYPE, null );
-    //console.log(headings.singleNodeValue);
-
 }, false);
-
-document.addEventListener('mouseover', function(e) {
-    if(!body.classList.contains('feedback') || e.target.classList.contains('counter') || feedbackForm.classList.contains('show-window') || body.classList.contains('show-feedback'))
-        return;
-    e.target.classList.add('hover');
-});
-document.addEventListener('mouseout', function(e) {
-    if(!body.classList.contains('feedback') || e.target.classList.contains('counter') || feedbackForm.classList.contains('show-window')|| body.classList.contains('show-feedback'))
-        return;
-    e.target.classList.remove('hover');
-});
 
 let screenshot = false;
 let dragging = false;
@@ -120,9 +58,6 @@ document.addEventListener('click', function (e) {
     e.preventDefault();
     if (!enableScreenshot) {
         enableScreenshot = true;
-        body.classList.add('disable-scroll');
-        document.body.style.cursor = 'crosshair';
-        return;
     }
     e = e || window.event;
     if (!screenshot) {
@@ -144,9 +79,15 @@ document.addEventListener('click', function (e) {
                     document.body.style.cursor = 'default';
                     button.addEventListener('click', function () {
                         Helper.setScreenshot(canvas.toDataURL());
+                        let screenshotImg = feedbackForm.querySelector('.screenshot');
+                        let image = new Image();
+                        image.id = "screenshot-preview";
+                        image.src = canvas.toDataURL();
+                        screenshotImg.appendChild(image);
                         document.getElementById('gs-screenshot').style.display = 'none';
                         document.body.classList.remove('attach-screenshot')
                         document.body.classList.add('feedback')
+                        feedbackForm.classList.add('show-window');
                     });
                     wrapper.append(button);
                     Screenshots.draw_canvas(element, canvas, config);

@@ -5,24 +5,25 @@ import CloseButton from "./CloseButton";
 import parse from "html-react-parser";
 
 import Comments from "./Comments";
+import ReactDOM from "react-dom";
+
 class FeedbackView extends React.Component {
     constructor(props) {
         super(props);
-        this.closeWindow = props.closeWindow;//this.closeWindow.bind(this);
+        this.closeWindowParent = props.closeWindow;//this.closeWindow.bind(this);
         this.feedback = props.feedback;
         this.onTabClick = this.onTabClick.bind(this);
+        this.closeWindow = this.closeWindow.bind(this)
         this.state = {tab:'feedback'}
     }
     onTabClick(tab) {
         this.setState({tab: tab});
     }
-/*
     closeWindow(e) {
-        Helper.getPrevious().classList.remove('selected')
-        this.feedback = this.feedback ?? document.getElementsByClassName('gs-feedback-view')[0];
-        this.feedback.classList.remove('show-window');
-        Helper.setPrevious(null)
-    }/**/
+        const node = ReactDOM.findDOMNode(this);
+        node.classList.remove('show-window');
+        this.closeWindowParent(e);
+    }
 
     render() {
         return <div className={"gs-feedback gs-feedback-view show-window"} style={this.styles}>

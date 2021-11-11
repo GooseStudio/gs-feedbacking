@@ -5,6 +5,7 @@ $primary-button-hover-color: #7d3322
 
 $font-family:  -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif
 .feedback
+  cursor: pointer
   .gs-feedback
     text-align: left
     text-transform: none
@@ -162,6 +163,9 @@ $font-family:  -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ub
       padding-bottom: 10px
       padding-inline-start: 0
     .browser-info
+      list-style-type: none
+      margin: 0
+      padding: 0
       .label
         font-weight: bold
         display: inline-block
@@ -280,6 +284,7 @@ body.feedback
   align-items: baseline
 .feedback .gs-feedback.show-window
   display: block
+.feedback .gs-feedback-form.show-window
   position: absolute
 .screenshot-area
     display: none
@@ -296,7 +301,7 @@ body.feedback
       background-color: #490353
       color: #eeeeee
       display: block
-      bottom: -44px
+      bottom: -50px
       position: absolute
       padding: 10px 15px
       border: none
@@ -305,7 +310,6 @@ body.feedback
       margin: 0
       font-weight: bold
       cursor: pointer
-      height: 40px
       &:hover
         background-color: #955c9d
 #gs-screenshot
@@ -337,7 +341,6 @@ body.feedback
       margin: 0
       font-weight: bold
       cursor: pointer
-      height: 40px
       border: 1px solid #FFF
       box-shadow: 4px 4px 4px #0105095e
       &:hover

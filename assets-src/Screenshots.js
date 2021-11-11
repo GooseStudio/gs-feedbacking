@@ -3,7 +3,7 @@ import Draw from "./Draw";
 
 class Screenshots {
 	static draw_canvas(element, canvas, config) {
-		new Draw(element, canvas,
+        new Draw(element, canvas,
 			{
 				offsetX:config.offsetX===0?config.offsetX:parseInt(config.left.replace('px',''))-parseInt(window.scrollX),
 				offsetY:config.offsetY===0?config.offsetY:parseInt(config.top.replace('px',''))-parseInt(window.scrollY)
@@ -33,10 +33,10 @@ class Screenshots {
 		html2canvas(screenshotTarget,
 			{
 				allowTaint: true,
-				width: config.width.replace('px',''),
-				height: config.height.replace('px',''),
-				x: config.left.replace('px',''),
-				y: config.top.replace('px',''),
+				width: parseInt(config.width.replace('px','')),
+				height: parseInt(config.height.replace('px','')),
+                x: parseInt(config.left.replace('px','')),
+                y: parseInt(config.top.replace('px','')),
 				ignoreElements: function (element) {
 					return element.id === 'feedback-app' || element.id === 'wpadminbar' || element.classList.contains('screenshot');
 				}
@@ -45,8 +45,6 @@ class Screenshots {
 			let el = document.getElementById('gs-screenshot')
 			el.style.display='flex'
 			let child = el.firstChild.firstChild
-//			child.style.left=config.left;
-//			child.style.top=config.top;
 			child.style.height = config.height;
 			child.style.width = config.width;
 			if(child.childNodes.length) {
@@ -54,7 +52,6 @@ class Screenshots {
 			}
 			child.prepend(canvas);
 			promise(child, canvas, config);
-//			window.location.href = canvas.toDataURL("image/png");
 		});
 	}
 }

@@ -56,10 +56,11 @@ class FeedbackForm extends React.Component {
 
     closeWindow() {
         Helper.getPrevious().classList.remove('selected')
+        Helper.getPrevious().classList.remove('hover')
         this.feedback = this.feedback ?? document.getElementsByClassName('gs-feedback-form')[0];
         this.feedback.classList.remove('show-window');
         document.body.classList.remove('show-feedback');
-        document.body.style.cursor='auto';
+        document.body.style.cursor='pointer';
         Helper.setPrevious(null)
     }
 
@@ -68,6 +69,8 @@ class FeedbackForm extends React.Component {
         document.body.classList.add('take-screenshot');
         this.feedback = this.feedback ?? document.getElementsByClassName('gs-feedback-form')[0];
         this.feedback.classList.remove('show-window');
+        document.body.classList.add('disable-scroll');
+        document.body.style.cursor = 'crosshair';
     }
 
     attachScreenshot(event) {
@@ -84,12 +87,11 @@ class FeedbackForm extends React.Component {
         canvas.id = "CursorLayer";
         canvas.width = 720;
         canvas.height = 405;
-        canvas.style.zIndex = 20000;
+        canvas.style.zIndex = '20000';
         canvas.style.backgroundColor='blue'
 
         button.innerText='Attach image'
         button.addEventListener('click', function() {
-            console.log('test')
             Helper.setScreenshot(canvas.toDataURL());
             document.getElementById('gs-screenshot').style.display='none';
             document.body.classList.remove('attach-screenshot')
@@ -124,7 +126,6 @@ class FeedbackForm extends React.Component {
         child.prepend(canvas);
         const FR = new FileReader();
         FR.addEventListener("load", (evt) => {
-            //screenshot.loadImage(evt)
             const img = new Image();
             img.addEventListener("load", () => {
                 ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -169,6 +170,8 @@ class FeedbackForm extends React.Component {
                                     <option value={'function'}>Function</option>
                                     <option value={'text'}>Text</option>
                                 </select>
+                                <div className={'screenshot'}>
+                                </div>
                                 { this.props.enableTakeScreenShot && <button type={"button"} className={"feedback-button screenshot-button"} onClick={this.takeScreenshot}>Take screenshot</button>}
 
                                 <label className={"feedback-button attach-screenshot-button"} >Attach screenshot

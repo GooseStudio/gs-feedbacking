@@ -25,6 +25,7 @@ class EnableFeedbackButton extends React.Component {
 
 	handleClick() {
 		this.body.classList.toggle('feedback');
+        this.props.onEnableClick();
         let anchors = document.getElementsByTagName("a");
         for (let i = 0; i < anchors.length; i++) {
             anchors[i].setAttribute('disabled', 'disabled');//.onclick = function() {return false;};
