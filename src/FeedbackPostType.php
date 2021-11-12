@@ -4,6 +4,7 @@
 namespace GooseStudio\Feedbacking;
 
 use GooseStudio\Feedbacking\Controllers\FeedbackController;
+use WP_User;
 
 class FeedbackPostType {
 	public const POST_TYPE = 'gs_feedback';
@@ -13,13 +14,21 @@ class FeedbackPostType {
 		add_action( 'save_post', [ $this, 'save' ] );
 		add_filter( 'manage_gs_feedback_posts_columns', [ $this, 'add_img_column' ], 10, 0 );
 		add_filter( 'manage_posts_custom_column', [ $this, 'manage_img_column' ], 10, 2 );
-		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue' ], 20, 0 );
+		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue' ], 20, 1 );
 		add_action( 'wp_ajax_change_feedback_status', [ $this, 'change_feedback_status' ] );
 	}
 
-	public function enqueue():void {
-		wp_enqueue_style( 'gs-sf-admin' );
-		wp_enqueue_script( 'gs-sf-admin' );
+	public function enqueue($hook_suffix):void {
+		if( in_array($hook_suffix, array('edit.php','post.php', 'post-new.php') ) ){
+			$screen = get_current_screen();
+			if( is_object( $screen ) && self::POST_TYPE == $screen->post_type ){
+				wp_enqueue_style( 'gs-sf-admin' );
+				wp_enqueue_script( 'gs-sf-admin' );
+				wp_enqueue_script( 'gs-sf-featherlight' );
+				wp_enqueue_style( 'gs-sf-featherlight' );
+
+			}
+		}
 	}
 
 	public function admin_init():void {
@@ -157,12 +166,25 @@ class FeedbackPostType {
 	}
 
 	public function register_feedback_meta_boxes():void {
+		add_meta_box( 'feedback_screenshot', __( 'Screenshot', 'gs_sf' ), [ $this, 'add_screenshot_meta_box' ], 'gs_feedback', 'side', 'high' );
 		add_meta_box( 'feedback_data', __( 'Data', 'gs_sf' ), [ $this, 'add_data_meta_box' ], 'gs_feedback', 'side', 'high' );
 		add_meta_box( 'feedback_status', __( 'Status', 'gs_sf' ), [ $this, 'add_status_meta_box' ], 'gs_feedback', 'side', 'high' );
 		remove_meta_box( 'titlediv', 'gs_feedback', 'core' );
 		remove_meta_box( 'submitdiv', 'gs_feedback', 'core' );
+		remove_meta_box( 'postimagediv', 'gs_feedback', 'core' );
 	}
 
+	/**
+	 * @param $post
+	 */
+	public function add_screenshot_meta_box( $post ):void {
+		add_thickbox();
+		?>
+			<div class="inside">
+		<div class="screenshot"><a data-featherlight="image" href="<?php echo esc_url( get_the_post_thumbnail_url( $post,'full' ) ); ?>"><?php the_post_thumbnail('medium'); ?></a></div>
+			</div>
+		<?php
+	}
 	/**
 	 * @param $post
 	 */
@@ -202,14 +224,24 @@ class FeedbackPostType {
 		<?php
 	}
 
+	/**
+	 * @param \WP_Post $post
+	 */
 	public function add_feedback_data( $post ):void {
-		if ( get_post_type( $post ) !== 'gs_feedback' ) {
+		if ( get_post_type( $post ) !== self::POST_TYPE ) {
 			return;
 		}
+		$author = new WP_User($post->post_author);
 		?>
 		<div class="feedback-container">
 			<div class="inside">
-				<div class="feedback-text">
+				<div class="feedback-author text-area">
+					<ul>
+						<li><?php echo get_avatar($post->post_author, 24) ?></li>
+						<li><?php echo esc_html($author->first_name) ?> <?php echo esc_html($author->last_name) ?> <?php echo sprintf(__('posted %s ago','gs-feedbacking'), human_time_diff(strtotime($post->post_date_gmt), time())) ?></li>
+					</ul>
+				</div>
+				<div class="feedback-text text-area">
 					<?php echo wp_kses_post( wpautop( $post->post_content ) ); ?>
 					<ul>
 						<li>Path: <?php echo esc_html( get_post_meta( $post->ID, '_element_path', true ) ); ?></li>
@@ -217,7 +249,6 @@ class FeedbackPostType {
 						</li>
 					</ul>
 				</div>
-				<div class="screenshot"><?php the_post_thumbnail( 'medium' ); ?></div>
 			</div>
 		</div>
 		<?php
@@ -289,7 +320,7 @@ class FeedbackPostType {
 
 	public function manage_img_column( $column_name, $post_id ) {
 		if ( 'screenshot' === $column_name ) {
-			echo get_the_post_thumbnail( $post_id, 'thumbnail' );
+			 echo '<a data-featherlight="image" href="', esc_url( get_the_post_thumbnail_url( $post_id,'full' ) ),'">', get_the_post_thumbnail( $post_id, 'thumbnail' ),'</a></div>';
 		}
 		if ( 'url' === $column_name ) {
 			echo '<a target="_blank" href="',esc_url( get_post_meta( $post_id, '_url', true ) ),'">',esc_url( get_post_meta( $post_id, '_url', true ) ),'</a>';

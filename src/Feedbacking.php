@@ -66,6 +66,8 @@ class Feedbacking {
 	public function admin_assets() : void {
 		wp_register_script( 'gs-sf-admin', plugins_url( '/dist/admin/main.js', GS_SF_PLUGIN_BASENAME ), array( 'jquery' ), GS_SF_ASSET_VERSION, true );
 		wp_register_style( 'gs-sf-admin', plugins_url( '/dist/admin/style.css', GS_SF_PLUGIN_BASENAME ), array(), GS_SF_ASSET_VERSION );
+		wp_register_script( 'gs-sf-featherlight', plugins_url( '/dist/admin/featherlight.min.js', GS_SF_PLUGIN_BASENAME ), array( 'jquery' ), GS_SF_ASSET_VERSION, true );
+		wp_register_style( 'gs-sf-featherlight', plugins_url( '/dist/admin/featherlight.min.css', GS_SF_PLUGIN_BASENAME ), array(), GS_SF_ASSET_VERSION );
 		$screen = get_current_screen();
 		if ( 'settings_page_site-feedback-options' === $screen->base ) {
 			wp_enqueue_style( 'gs-sf-admin' );

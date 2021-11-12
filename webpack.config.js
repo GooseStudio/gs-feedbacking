@@ -11,10 +11,10 @@ module.exports = {
     // Tell webpack to begin building its
     // dependency graph from this file.
     entry: {
-        'frontend/main': path.join(__dirname, 'assets-src', 'index.jsx'), // (your main JS)
-        'frontend/style': './assets-src/feedback.sass', // (first css file)
-        'admin/main': './assets-src/admin.js', // (another css file)
-        'admin/style': './assets-src/admin.css', // (another css file)
+        'frontend/main': path.join(__dirname, 'assets-src', 'index.jsx'),
+        'frontend/style': './assets-src/feedback.sass',
+        'admin/main': './assets-src/admin.js',
+        'admin/style': './assets-src/admin.sass',
     },
     // And to place the output in the `build` directory
     output: {
