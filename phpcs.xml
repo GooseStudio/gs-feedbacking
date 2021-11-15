@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<ruleset>
+    <!-- Only scan PHP files. -->
+    <arg name="extensions" value="php"/>
+
+    <!-- Whenever possible, cache the scan results and re-use those for unchanged files on the next scan. -->
+    <arg name="cache"/>
+    <!-- Check up to 20 files simultaneously. -->
+    <arg name="parallel" value="20"/>
+    <!-- Show sniff codes in all reports. -->
+    <arg value="ps"/>
+
+    <file>autoloader.php</file>
+    <file>plugin.php</file>
+    <file>src</file>
+
+    <rule ref="WordPress">
+        <exclude name="Generic.Commenting.DocComment.MissingShort"/>
+        <exclude name="Squiz.Commenting.BlockComment.NoCapital"/>
+        <exclude name="Squiz.Commenting.BlockComment.CloserSameLine"/>
+        <exclude name="Squiz.Commenting.BlockComment.NoEmptyLineBefore"/>
+        <exclude name="Squiz.Commenting.InlineComment.InvalidEndChar"/>
+        <exclude name="Squiz.Commenting.FunctionComment.ExtraParamComment"/>
+        <exclude name="Squiz.Commenting.FunctionComment.MissingParamTag"/>
+        <exclude name="Squiz.Commenting.VariableComment.Missing"/>
+        <exclude name="Squiz.Commenting.FunctionComment.MissingParamComment"/>
+        <exclude name="Squiz.Commenting.FileComment.Missing"/>
+        <exclude name="Squiz.Commenting.FunctionComment.Missing"/>
+        <exclude name="Squiz.Commenting.FunctionComment.MissingParamName"/>
+        <exclude name="Squiz.Commenting.ClassComment.Missing"/>
+        <exclude name="Squiz.Commenting.FileComment.MissingPackageTag"/>
+        <exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
+        <exclude name="WordPress.Files.FileName.NotHyphenatedLowercase"/>
+        <exclude name="WordPress.Files.FileName.InvalidClassFileName"/>
+        <exclude name="WordPress.PHP.DisallowShortTernary.Found"/>
+        <exclude name="WordPress.WhiteSpace.PrecisionAlignment.Found"/>
+    </rule>
+    <rule ref="WordPressVIPMinimum">
+        <exclude name="WordPressVIPMinimum.Security.Mustache.OutputNotation" />
+        <exclude name="WordPressVIPMinimum.Functions.RestrictedFunctions.get_intermediate_image_sizes_get_intermediate_image_sizes" />
+        <exclude name="WordPressVIPMinimum.Functions.RestrictedFunctions.get_posts_get_posts" />
+        <exclude name="WordPressVIPMinimum.Functions.RestrictedFunctions.wp_is_mobile_wp_is_mobile" />
+        <exclude name="WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude" />
+        <exclude name="WordPressVIPMinimum.Functions.RestrictedFunctions.custom_role_add_role" />
+    </rule>
+</ruleset>

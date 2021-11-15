@@ -1,0 +1,15 @@
+/.wordpress-org
+/.git
+/.github
+/node_modules
+/assets-src
+.distignore
+.gitignore
+.gitattributes
+composer.json
+composer.lock
+phpcs.xml
+postcss.config.js
+webpack.config.js
+package.json
+package-lock.json
