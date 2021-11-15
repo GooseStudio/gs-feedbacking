@@ -48,6 +48,7 @@ class FeedbackForm extends React.Component {
         feedback.meta._browser_info = Helper.getBrowserInfo();
         feedback.meta._url = Helper.getPageURL();
         feedback.screenshot = Helper.getScreenshot();
+        feedback.terms = {'gs_feedback_category': [this.state.category]};
         request.send(JSON.stringify(feedback));
         Helper.setScreenshot(null)
         this.message.current.value = '';

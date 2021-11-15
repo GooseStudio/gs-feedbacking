@@ -8,14 +8,18 @@ use WP_User;
 
 class FeedbackPostType {
 	public const POST_TYPE = 'gs_feedback';
+	const CATEGORY = 'gs_feedback_category';
+
 	public function init(): void {
 		add_action( 'init', [ $this, 'register_post_type' ], 0 );
+		add_action( 'init', [ $this, 'register_custom_taxonomy' ], 0 );
 		add_action( 'admin_init', [ $this, 'admin_init' ], 0 );
 		add_action( 'save_post', [ $this, 'save' ] );
 		add_filter( 'manage_gs_feedback_posts_columns', [ $this, 'add_img_column' ], 10, 0 );
 		add_filter( 'manage_posts_custom_column', [ $this, 'manage_img_column' ], 10, 2 );
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue' ], 20, 1 );
 		add_action( 'wp_ajax_change_feedback_status', [ $this, 'change_feedback_status' ] );
+		add_action( 'rest_insert_gs_feedback', [$this, 'rest_insert_feedback'], 10, 2);
 	}
 
 	public function enqueue($hook_suffix):void {
@@ -26,7 +30,6 @@ class FeedbackPostType {
 				wp_enqueue_script( 'gs-feedbacking-admin' );
 				wp_enqueue_script( 'gs-feedbacking-featherlight' );
 				wp_enqueue_style( 'gs-feedbacking-featherlight' );
-
 			}
 		}
 	}
@@ -165,6 +168,41 @@ class FeedbackPostType {
 		register_meta( $object_type, '_feedback_status', $args2 );
 	}
 
+	public function register_custom_taxonomy():void {
+		$labels = array(
+			'name'                       => _x( 'Categories', 'Taxonomy General Name', 'gs-feedbacking' ),
+			'singular_name'              => _x( 'Category', 'Taxonomy Singular Name', 'gs-feedbacking' ),
+			'menu_name'                  => __( 'Categories', 'gs-feedbacking' ),
+			'all_items'                  => __( 'All Items', 'gs-feedbacking' ),
+			'parent_item'                => __( 'Parent Item', 'gs-feedbacking' ),
+			'parent_item_colon'          => __( 'Parent Item:', 'gs-feedbacking' ),
+			'new_item_name'              => __( 'New Item Name', 'gs-feedbacking' ),
+			'add_new_item'               => __( 'Add New Item', 'gs-feedbacking' ),
+			'edit_item'                  => __( 'Edit Item', 'gs-feedbacking' ),
+			'update_item'                => __( 'Update Item', 'gs-feedbacking' ),
+			'view_item'                  => __( 'View Item', 'gs-feedbacking' ),
+			'separate_items_with_commas' => __( 'Separate items with commas', 'gs-feedbacking' ),
+			'add_or_remove_items'        => __( 'Add or remove items', 'gs-feedbacking' ),
+			'choose_from_most_used'      => __( 'Choose from the most used', 'gs-feedbacking' ),
+			'popular_items'              => __( 'Popular Items', 'gs-feedbacking' ),
+			'search_items'               => __( 'Search Items', 'gs-feedbacking' ),
+			'not_found'                  => __( 'Not Found', 'gs-feedbacking' ),
+			'no_terms'                   => __( 'No items', 'gs-feedbacking' ),
+			'items_list'                 => __( 'Items list', 'gs-feedbacking' ),
+			'items_list_navigation'      => __( 'Items list navigation', 'gs-feedbacking' ),
+		);
+		$args = array(
+			'labels'                     => $labels,
+			'hierarchical'               => false,
+			'public'                     => true,
+			'show_ui'                    => true,
+			'show_admin_column'          => true,
+			'show_in_nav_menus'          => false,
+			'show_tagcloud'              => false,
+			'show_in_rest'               => true,
+		);
+		register_taxonomy( 'gs_feedback_category', array( 'gs_feedback' ), $args );
+	}
 	public function register_feedback_meta_boxes():void {
 		add_meta_box( 'feedback_screenshot', __( 'Screenshot', 'gs_sf' ), [ $this, 'add_screenshot_meta_box' ], 'gs_feedback', 'side', 'high' );
 		add_meta_box( 'feedback_data', __( 'Data', 'gs_sf' ), [ $this, 'add_data_meta_box' ], 'gs_feedback', 'side', 'high' );
@@ -303,6 +341,22 @@ class FeedbackPostType {
 		// Update the meta field.
 		update_post_meta( $post_id, '_feedback_status', $_feedback_status );
 		return $post_id;
+	}
+
+	public function rest_insert_feedback($post, $request ) {
+		if ( self::POST_TYPE !== get_post_type( $post ) ) {
+			return;
+		}
+
+		$params = $request->get_json_params();
+
+		if(array_key_exists("terms", $params)) {
+			foreach($params["terms"] as $taxonomy => $terms) {
+				if (self::CATEGORY === $taxonomy) {
+					wp_set_post_terms($post->ID, $terms, $taxonomy);
+				}
+			}
+		}
 	}
 
 	public function add_img_column():array {
