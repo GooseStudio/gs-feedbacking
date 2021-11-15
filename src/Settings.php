@@ -105,7 +105,7 @@ class Settings extends SettingsBase {
 			</li>
 		<?php endforeach; ?>
 		</ul>
-		<p><?php esc_html_e( '"Project manager" is an external tool that the feedback plugin integrates with.', 'gs-sf' ); ?></p>
+		<p><?php esc_html_e( '"Project manager" is an external tool that the feedback plugin integrates with.', 'gs-feedbacking' ); ?></p>
 		<?php
 	}
 

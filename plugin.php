@@ -1,20 +1,20 @@
 <?php
 /**
- * Plugin Name: GS Feedbacking
+ * Plugin Name: Feedbacking
  * Plugin URI: https://goose.studio/products/feedbacking/
  * Description: Prerelease version. Enable users to comment your site design.
  * Version: 0.1
  * Author: Goose Studio
  * Author URI: https://goose.studio/
  * Copyright: Andreas Nurbo
- * Text Domain: gs-sf
+ * Text Domain: gs-feedbacking
  * License: GPLv3
  * Domain Path: /lang
  */
 
 /**
  *
- * Comment and give feedback on site parts
+ * Comment and give feedback on site design
  * Copyright (C) 2021  Andreas Nurbo
  *
  * This program is free software: you can redistribute it and/or modify

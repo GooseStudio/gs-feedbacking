@@ -22,10 +22,10 @@ class FeedbackPostType {
 		if( in_array($hook_suffix, array('edit.php','post.php', 'post-new.php') ) ){
 			$screen = get_current_screen();
 			if( is_object( $screen ) && self::POST_TYPE == $screen->post_type ){
-				wp_enqueue_style( 'gs-sf-admin' );
-				wp_enqueue_script( 'gs-sf-admin' );
-				wp_enqueue_script( 'gs-sf-featherlight' );
-				wp_enqueue_style( 'gs-sf-featherlight' );
+				wp_enqueue_style( 'gs-feedbacking-admin' );
+				wp_enqueue_script( 'gs-feedbacking-admin' );
+				wp_enqueue_script( 'gs-feedbacking-featherlight' );
+				wp_enqueue_style( 'gs-feedbacking-featherlight' );
 
 			}
 		}
@@ -64,32 +64,32 @@ class FeedbackPostType {
 
 	public function register_post_type() : void {
 		$labels       = array(
-			'name'                  => _x( 'Feedback', 'Post Type General Name', 'gs-sf' ),
-			'singular_name'         => _x( 'Feedback', 'Post Type Singular Name', 'gs-sf' ),
-			'menu_name'             => __( 'Feedback', 'gs-sf' ),
-			'name_admin_bar'        => __( 'Feedback', 'gs-sf' ),
-			'archives'              => __( 'Feedback Archives', 'gs-sf' ),
-			'attributes'            => __( 'Feedback Attributes', 'gs-sf' ),
-			'parent_item_colon'     => __( 'Parent Feedback:', 'gs-sf' ),
-			'all_items'             => __( 'All Feedback', 'gs-sf' ),
-			'add_new_item'          => __( 'Add New Feedback', 'gs-sf' ),
-			'add_new'               => __( 'Add New Feedback', 'gs-sf' ),
-			'new_item'              => __( 'New Feedback', 'gs-sf' ),
-			'edit_item'             => __( 'Edit Feedback', 'gs-sf' ),
-			'update_item'           => __( 'Update Feedback', 'gs-sf' ),
-			'view_item'             => __( 'View Feedback', 'gs-sf' ),
-			'view_items'            => __( 'View Feedback', 'gs-sf' ),
-			'search_items'          => __( 'Search Feedback', 'gs-sf' ),
-			'not_found'             => __( 'Not found', 'gs-sf' ),
-			'not_found_in_trash'    => __( 'Not found in Trash', 'gs-sf' ),
-			'featured_image'        => __( 'Screenshot', 'gs-sf' ),
-			'set_featured_image'    => __( 'Set screenshot image', 'gs-sf' ),
-			'remove_featured_image' => __( 'Remove screenshot', 'gs-sf' ),
-			'use_featured_image'    => __( 'Use as screenshot', 'gs-sf' ),
-			'uploaded_to_this_item' => __( 'Uploaded to this feedback', 'gs-sf' ),
-			'items_list'            => __( 'Feedback list', 'gs-sf' ),
-			'items_list_navigation' => __( 'Feedback list navigation', 'gs-sf' ),
-			'filter_items_list'     => __( 'Filter feedback list', 'gs-sf' ),
+			'name'                  => _x( 'Feedback', 'Post Type General Name', 'gs-feedbacking' ),
+			'singular_name'         => _x( 'Feedback', 'Post Type Singular Name', 'gs-feedbacking' ),
+			'menu_name'             => __( 'Feedback', 'gs-feedbacking' ),
+			'name_admin_bar'        => __( 'Feedback', 'gs-feedbacking' ),
+			'archives'              => __( 'Feedback Archives', 'gs-feedbacking' ),
+			'attributes'            => __( 'Feedback Attributes', 'gs-feedbacking' ),
+			'parent_item_colon'     => __( 'Parent Feedback:', 'gs-feedbacking' ),
+			'all_items'             => __( 'All Feedback', 'gs-feedbacking' ),
+			'add_new_item'          => __( 'Add New Feedback', 'gs-feedbacking' ),
+			'add_new'               => __( 'Add New Feedback', 'gs-feedbacking' ),
+			'new_item'              => __( 'New Feedback', 'gs-feedbacking' ),
+			'edit_item'             => __( 'Edit Feedback', 'gs-feedbacking' ),
+			'update_item'           => __( 'Update Feedback', 'gs-feedbacking' ),
+			'view_item'             => __( 'View Feedback', 'gs-feedbacking' ),
+			'view_items'            => __( 'View Feedback', 'gs-feedbacking' ),
+			'search_items'          => __( 'Search Feedback', 'gs-feedbacking' ),
+			'not_found'             => __( 'Not found', 'gs-feedbacking' ),
+			'not_found_in_trash'    => __( 'Not found in Trash', 'gs-feedbacking' ),
+			'featured_image'        => __( 'Screenshot', 'gs-feedbacking' ),
+			'set_featured_image'    => __( 'Set screenshot image', 'gs-feedbacking' ),
+			'remove_featured_image' => __( 'Remove screenshot', 'gs-feedbacking' ),
+			'use_featured_image'    => __( 'Use as screenshot', 'gs-feedbacking' ),
+			'uploaded_to_this_item' => __( 'Uploaded to this feedback', 'gs-feedbacking' ),
+			'items_list'            => __( 'Feedback list', 'gs-feedbacking' ),
+			'items_list_navigation' => __( 'Feedback list navigation', 'gs-feedbacking' ),
+			'filter_items_list'     => __( 'Filter feedback list', 'gs-feedbacking' ),
 		);
 		$capabilities = array(
 			'edit_post'          => 'edit_feedback',
@@ -102,8 +102,8 @@ class FeedbackPostType {
 			'read_private_posts' => 'read_private_feedback',
 		);
 		$args         = array(
-			'label'                 => __( 'Feedback', 'gs-sf' ),
-			'description'           => __( 'Post Type Description', 'gs-sf' ),
+			'label'                 => __( 'Feedback', 'gs-feedbacking' ),
+			'description'           => __( 'Post Type Description', 'gs-feedbacking' ),
 			'labels'                => $labels,
 			'supports'              => array( 'author', 'thumbnail', 'title', 'editor', 'comments' ),
 			'taxonomies'            => array(),
@@ -191,12 +191,12 @@ class FeedbackPostType {
 	public function add_data_meta_box( $post ):void {
 		$browser_info = get_post_meta( $post->ID, '_browser_info', true ); ?>
 			<ul class="browser-info">
-				<li><span class="label"><?php esc_html_e( 'Browser', 'gs-sf' ); ?>:</span> <span class="value"><?php echo esc_html( $browser_info['browser']['name'] ); ?></span></li>
-				<li><span class="label"><?php esc_html_e( 'OS', 'gs-sf' ); ?>:</span> <span class="value"><?php echo esc_html( $browser_info['os']['name'] ); ?> <?php echo esc_html( $browser_info['os']['version'] ); ?></span></li>
-				<li><span class="label"><?php esc_html_e( 'Platform', 'gs-sf' ); ?>:</span> <span class="value"><?php echo esc_html( $browser_info['platform']['type'] ); ?> <?php echo isset( $browser_info['platform']['vendor'] ) ? esc_html( $browser_info['platform']['vendor'] ) : ''; ?></span></li>
-				<li><span class="label"><?php esc_html_e( 'Screen', 'gs-sf' ); ?>:</span> <span class="value"><?php echo esc_html( $browser_info['screen']['width'] ); ?>x<?php echo esc_html( $browser_info['screen']['height'] ); ?></span></li>
-				<li><span class="label"><?php esc_html_e( 'Resolution', 'gs-sf' ); ?>:</span> <span class="value"><?php echo esc_html( $browser_info['resolution']['width'] ); ?>x<?php echo esc_html( $browser_info['resolution']['height'] ); ?></span></li>
-				<li><span class="label"><?php esc_html_e( 'User Agent', 'gs-sf' ); ?>:</span><br /> <span class="value"><?php echo esc_html( $browser_info['user_agent'] ); ?></span></li>
+				<li><span class="label"><?php esc_html_e( 'Browser', 'gs-feedbacking' ); ?>:</span> <span class="value"><?php echo esc_html( $browser_info['browser']['name'] ); ?></span></li>
+				<li><span class="label"><?php esc_html_e( 'OS', 'gs-feedbacking' ); ?>:</span> <span class="value"><?php echo esc_html( $browser_info['os']['name'] ); ?> <?php echo esc_html( $browser_info['os']['version'] ); ?></span></li>
+				<li><span class="label"><?php esc_html_e( 'Platform', 'gs-feedbacking' ); ?>:</span> <span class="value"><?php echo esc_html( $browser_info['platform']['type'] ); ?> <?php echo isset( $browser_info['platform']['vendor'] ) ? esc_html( $browser_info['platform']['vendor'] ) : ''; ?></span></li>
+				<li><span class="label"><?php esc_html_e( 'Screen', 'gs-feedbacking' ); ?>:</span> <span class="value"><?php echo esc_html( $browser_info['screen']['width'] ); ?>x<?php echo esc_html( $browser_info['screen']['height'] ); ?></span></li>
+				<li><span class="label"><?php esc_html_e( 'Resolution', 'gs-feedbacking' ); ?>:</span> <span class="value"><?php echo esc_html( $browser_info['resolution']['width'] ); ?>x<?php echo esc_html( $browser_info['resolution']['height'] ); ?></span></li>
+				<li><span class="label"><?php esc_html_e( 'User Agent', 'gs-feedbacking' ); ?>:</span><br /> <span class="value"><?php echo esc_html( $browser_info['user_agent'] ); ?></span></li>
 			</ul>
 			<?php
 	}

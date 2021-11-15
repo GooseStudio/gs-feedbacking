@@ -1,4 +1,4 @@
-=== GS Feedbacking ===
+=== Feedbacking - Lets users comment your design ===
 Contributors: andreasnrb, goosestudio
 Tags: comment, feedback, design, consulting
 Stable tag: 0.1

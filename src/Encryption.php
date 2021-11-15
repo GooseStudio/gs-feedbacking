@@ -151,7 +151,7 @@ class Encryption {
 		}
 
 		if ( 1 === $version ) {
-			return hash_hmac( 'sha256', $salt, 'gs-sf-encryption', true );
+			return hash_hmac( 'sha256', $salt, 'gs-feedbacking-encryption', true );
 		}
 		throw new RuntimeException( 'Incorrect version number: ' . $version );
 	}
